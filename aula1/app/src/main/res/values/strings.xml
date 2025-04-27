@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Aula 1</string>
+    <string name="sign_in_icon">Sign In Icon</string>
+    <string name="digite_suas_credenciais_para_continuar">Digite suas credenciais para continuar</string>
+    <string name="salvar_informa_o_de_login">Salvar Informação de Login</string>
+    <string name="senha">Senha:</string>
+    <string name="login">Login:</string>
+    <string name="entrar">Entrar</string>
+</resources>
