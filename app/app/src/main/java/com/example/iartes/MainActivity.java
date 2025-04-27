@@ -2,6 +2,8 @@ package com.example.iartes;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,8 +18,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.iartes.R;
 
 public class MainActivity extends AppCompatActivity {
-    public int contador = 0;
-    public TextView numero;
 
     public EditText login;
 
@@ -32,10 +32,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-        //numero = (TextView) findViewById(R.id.numero);
-        login = (EditText) findViewById(R.id.login);
-        senha = (EditText) findViewById(R.id.senha);
-        usuarioInvalido = (TextView) findViewById(R.id.invalido);
+        login = (EditText) findViewById(R.id.etLogin);
+        senha = (EditText) findViewById(R.id.etSenha);
+        usuarioInvalido = (TextView) findViewById(R.id.tvInvalido);
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -45,24 +44,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void imprime(View view) {
-        Toast meuToast = null;
-        meuToast = Toast.makeText(this, "O valor do contador é: " + contador, Toast.LENGTH_LONG);
-        meuToast.show();
-    }
-
-    public void soma(View view) {
-        contador  = contador + 1;
-        numero.setText(Integer.toString(contador));
-    }
-
     public void fazLogin(View view) {
         if(login.getText().toString().equals("admin") && senha.getText().toString().equals("admin")) {
             Toast notif = Toast.makeText(this,"O login é: " +  login.getText().toString() + " a senha é: " + senha.getText().toString(), Toast.LENGTH_SHORT);
             notif.show();
         } else {
             usuarioInvalido.setVisibility(View.VISIBLE);
-        }
 
+            // Usando Handler corretamente no Android 11+
+            new Handler(Looper.getMainLooper()).postDelayed(
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            usuarioInvalido.setVisibility(View.INVISIBLE);
+                        }
+                    },
+                    3000 // 3 segundos
+            );
+        }
     }
+
+
 }
