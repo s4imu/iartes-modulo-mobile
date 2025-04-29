@@ -1,9 +1,11 @@
 package com.example.iartes;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -48,6 +50,11 @@ public class MainActivity extends AppCompatActivity {
         if(login.getText().toString().equals("admin") && senha.getText().toString().equals("admin")) {
             Toast notif = Toast.makeText(this,"O login é: " +  login.getText().toString() + " a senha é: " + senha.getText().toString(), Toast.LENGTH_SHORT);
             notif.show();
+            Intent intent = new Intent(this, tela_logada.class);
+            //put extra serve para comunicação entre activities
+            intent.putExtra("usuario", login.getText().toString());
+            startActivity(intent);
+            finish();
         } else {
             usuarioInvalido.setVisibility(View.VISIBLE);
 
@@ -62,7 +69,12 @@ public class MainActivity extends AppCompatActivity {
                     3000 // 3 segundos
             );
         }
+
+
     }
 
-
+    protected void onResume(){
+        super.onResume();
+        //Log.i()
+    }
 }

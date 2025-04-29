@@ -7,4 +7,6 @@
     <string name="login">Login:</string>
     <string name="entrar">Entrar</string>
     <string name="usuario_invalido">Usuário Inválido</string>
+    <string name="abrir">Abrir Menu</string>
+    <string name="fechar">Fechar Menu</string>
 </resources>
