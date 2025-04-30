@@ -2,6 +2,7 @@ package com.example.iartes;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.preference.PreferenceManager;
 
 import com.example.iartes.R;
 
@@ -47,7 +49,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fazLogin(View view) {
-        if(login.getText().toString().equals("admin") && senha.getText().toString().equals("admin")) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String prefLogin = sharedPreferences.getString("login", "");
+        String prefPass  = sharedPreferences.getString("senha_padrao", "1234");
+
+        SharedPreferences.Editor editor = sharedPreferences.edit()
+
+        if(login.getText().toString().equals("admin") && senha.getText().toString().equals(prefPass)) {
             Toast notif = Toast.makeText(this,"O login é: " +  login.getText().toString() + " a senha é: " + senha.getText().toString(), Toast.LENGTH_SHORT);
             notif.show();
             Intent intent = new Intent(this, tela_logada.class);

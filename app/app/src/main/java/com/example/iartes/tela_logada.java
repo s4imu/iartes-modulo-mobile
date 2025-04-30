@@ -1,5 +1,6 @@
 package com.example.iartes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -69,6 +70,10 @@ public class tela_logada extends AppCompatActivity implements NavigationView.OnN
             Toast.makeText(this, "Clicou em Perfil", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_configuracoes) {
             Toast.makeText(this, "Clicou em Configurações", Toast.LENGTH_SHORT).show();
+
+            Intent intentConfig = new Intent(this, PreferencesActivity.class);
+            startActivity(intentConfig);
+
         } else if (id == R.id.nav_compartilhar) {
             Toast.makeText(this, "Clicou em Compartilhar", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_sobre) {
