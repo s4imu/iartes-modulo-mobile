@@ -3,6 +3,7 @@ package com.example.iartes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,9 +11,11 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.iartes.model.Database;
+
 public class SplashScreen extends AppCompatActivity {
 
-    public int TEMPO_SPLASH_SCREEN = 200;
+    public int TEMPO_SPLASH_SCREEN = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,18 +23,25 @@ public class SplashScreen extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_splash_screen);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                irParaProximaActivity();
-            }
+        // vamos iniciar o banco de dados
+        inicializarBancoDados();
 
-            private void irParaProximaActivity() {
-                Intent intent = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        },  TEMPO_SPLASH_SCREEN);
+        new Handler().postDelayed(new Runnable() {
+                                      @Override
+                                      public void run() {
+                                          irParaAProximaActivity();
+                                      }
+
+                                      private void irParaAProximaActivity() {
+                                          Intent intent = new Intent(
+                                                  SplashScreen.this,
+                                                  MainActivity.class
+                                          );
+                                          startActivity(intent);
+                                          finish();
+                                      }
+                                  }
+                , TEMPO_SPLASH_SCREEN);
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -41,5 +51,14 @@ public class SplashScreen extends AppCompatActivity {
         });
     }
 
+    private void inicializarBancoDados() {
+        try {
+            Database dbHelper = new Database(this);
+            dbHelper.getWritableDatabase();
+            Log.i("Debug", "Banco de dados inicializado");
+        } catch (Exception e) {
+            Log.e("Debug", "Erro ao inicializar banco: " + e.getMessage());
+        }
+    }
 
 }

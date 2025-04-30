@@ -50,6 +50,12 @@ public class tela_logada extends AppCompatActivity implements NavigationView.OnN
         }
     }
 
+    public void abrirCadastroMusica(View view) {
+        Intent intent = new Intent(this, CadastroMusica.class);
+        startActivity(intent);
+    }
+
+
     @Override
     public void onBackPressed() {
         // Fecha o drawer se estiver aberto quando o botão voltar clicado

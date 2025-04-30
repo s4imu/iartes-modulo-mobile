@@ -7,19 +7,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.graphics.Insets;
+import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
-import com.example.iartes.R;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,20 +55,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fazLogin(View view) {
+        String msg = "O login é " +
+                login.getText().toString() +
+                " e a senha é " +
+                senha.getText().toString();
+
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String prefLogin = sharedPreferences.getString("login", "");
-        String prefPass  = sharedPreferences.getString("senha_padrao", "1234");
+        String senhaPadrao = sharedPreferences.getString("senha_padrao", "admin");
 
-        SharedPreferences.Editor editor = sharedPreferences.edit()
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.putString("senha_padrao", "senha2");
+//        editor.apply();
 
-        if(login.getText().toString().equals("admin") && senha.getText().toString().equals(prefPass)) {
-            Toast notif = Toast.makeText(this,"O login é: " +  login.getText().toString() + " a senha é: " + senha.getText().toString(), Toast.LENGTH_SHORT);
+        Log.i("Debug", "A senha padrão é: " + senhaPadrao);
+
+        if(
+                login.getText().toString().equals("admin")
+                        && password.getText().toString().equals(senhaPadrao)
+        ){
+            Toast notif = Toast.makeText(this,
+                    msg,
+                    Toast.LENGTH_LONG);
             notif.show();
-            Intent intent = new Intent(this, tela_logada.class);
-            //put extra serve para comunicação entre activities
+            //acesso uma activity nova através da Intent
+            Intent intent = new Intent(MainActivity.this, tela_logada.class);
             intent.putExtra("usuario", login.getText().toString());
+
             startActivity(intent);
-            finish();
+
+            // Se quiserem matar essa activity
+            // finish();
         } else {
             usuarioInvalido.setVisibility(View.VISIBLE);
 
@@ -79,10 +101,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }
-
-    protected void onResume(){
-        super.onResume();
-        //Log.i()
     }
 }
