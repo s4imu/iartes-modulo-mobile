@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(
                 login.getText().toString().equals("admin")
-                        && password.getText().toString().equals(senhaPadrao)
+                        && senha.getText().toString().equals(senhaPadrao)
         ){
             Toast notif = Toast.makeText(this,
                     msg,
