@@ -9,4 +9,15 @@
     <string name="usuario_invalido">Usuário Inválido</string>
     <string name="abrir">Abrir Menu</string>
     <string name="fechar">Fechar Menu</string>
+
+
+    <string-array name="tema_entries">
+        <item>Claro</item>
+        <item>Escuro</item>
+    </string-array>
+
+    <string-array name="tema_values">
+        <item>claro</item>
+        <item>escuro</item>
+    </string-array>
 </resources>
