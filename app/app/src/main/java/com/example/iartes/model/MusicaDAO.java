@@ -1,6 +1,7 @@
 package com.example.iartes.model;
 
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -29,9 +30,9 @@ public class MusicaDAO {
             String nome = cursor.getString(1);
             String artista = cursor.getString(2);
             String album = cursor.getString(3);
-            String imagemPath = cursor.getString(4);
+            byte[] imagemBlob = cursor.getBlob(4); // pega como byte[]
 
-            result.add(new Musica(id, nome, artista, album, imagemPath));
+            result.add(new Musica(id, nome, artista, album, imagemBlob));
             Log.i("Debug", "Música encontrada: " + nome + " - " + artista);
         }
         cursor.close();
@@ -39,19 +40,18 @@ public class MusicaDAO {
     }
 
     public boolean addMusica(Musica musica) {
-        String sql = "INSERT INTO musicas VALUES (NULL, "
-                + "'" + musica.getNome() + "', "
-                + "'" + musica.getArtista() + "', "
-                + "'" + musica.getAlbum() + "', "
-                + "'" + musica.getImagemPath() + "')";
+        ContentValues values = new ContentValues();
+        values.put("nome", musica.getNome());
+        values.put("artista", musica.getArtista());
+        values.put("album", musica.getAlbum());
+        values.put("img", musica.getImagemBlob());
+
         try {
-            database.execSQL(sql);
+            database.insert("musicas", null, values);
             Toast.makeText(context, "Música salva com sucesso!", Toast.LENGTH_SHORT).show();
-            Log.i("Debug", "Música adicionada: " + musica.getNome());
             return true;
         } catch (SQLException e) {
-            Toast.makeText(context, "Erro ao salvar música! " + e.getMessage(), Toast.LENGTH_SHORT).show();
-            Log.e("Debug", "Erro ao adicionar música: " + e.getMessage());
+            Toast.makeText(context, "Erro ao salvar música: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -64,27 +64,32 @@ public class MusicaDAO {
             String nome = cursor.getString(1);
             String artista = cursor.getString(2);
             String album = cursor.getString(3);
-            String imagemPath = cursor.getString(4);
+            byte[] imagemBlob = cursor.getBlob(4);
             cursor.close();
-            return new Musica(id, nome, artista, album, imagemPath);
+            return new Musica(id, nome, artista, album, imagemBlob);
         }
         cursor.close();
         return null;
     }
 
     public boolean updateMusica(Musica musica) {
-        String sql = "UPDATE musicas SET "
-                + "nome='" + musica.getNome() + "', "
-                + "artista='" + musica.getArtista() + "', "
-                + "album='" + musica.getAlbum() + "', "
-                + "img='" + musica.getImagemPath() + "' "
-                + "WHERE id=" + musica.getId();
+        ContentValues values = new ContentValues();
+        values.put("nome", musica.getNome());
+        values.put("artista", musica.getArtista());
+        values.put("album", musica.getAlbum());
+        values.put("img", musica.getImagemBlob()); // campo BLOB
+
         try {
-            database.execSQL(sql);
-            Toast.makeText(context, "Música atualizada!", Toast.LENGTH_SHORT).show();
-            return true;
+            int linhasAfetadas = database.update("musicas", values, "id=?", new String[]{String.valueOf(musica.getId())});
+            if (linhasAfetadas > 0) {
+                Toast.makeText(context, "Música atualizada!", Toast.LENGTH_SHORT).show();
+                return true;
+            } else {
+                Toast.makeText(context, "Nenhuma música foi atualizada.", Toast.LENGTH_SHORT).show();
+                return false;
+            }
         } catch (SQLException e) {
-            Toast.makeText(context, "Erro ao atualizar! " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Erro ao atualizar: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             return false;
         }
     }

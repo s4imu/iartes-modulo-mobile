@@ -15,7 +15,7 @@ public class Database extends SQLiteOpenHelper {
             "nome TEXT, " +
             "artista TEXT, " +
             "album TEXT, " +
-            "img TEXT)";
+            "img BLOB)";
 
     private static final String SQL_POPULATE_MUSIC = "INSERT INTO musicas VALUES " +
             "(NULL, 'Bring me to life', 'Evanescence', 'Fallen', '')";

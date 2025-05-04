@@ -5,21 +5,22 @@ public class Musica {
     private String nome;
     private String artista;
     private String album;
-    private String imagemPath;
 
-    public Musica(int id, String nome, String artista, String album, String imagemPath) {
+    private byte[] imagemBlob;
+
+    public Musica(int id, String nome, String artista, String album, byte[] imagemBlob) {
         this.id = id;
         this.nome = nome;
         this.artista = artista;
         this.album = album;
-        this.imagemPath = imagemPath;
+        this.imagemBlob = imagemBlob;
     }
 
-    public Musica(String nome, String artista, String album, String imagemPath) {
+    public Musica(String nome, String artista, String album, byte[] imagemBlob) {
         this.nome = nome;
         this.artista = artista;
         this.album = album;
-        this.imagemPath = imagemPath;
+        this.imagemBlob = imagemBlob;
     }
 
     public int getId() {
@@ -54,11 +55,11 @@ public class Musica {
         this.album = album;
     }
 
-    public String getImagemPath() {
-        return imagemPath;
+    public byte[] getImagemBlob() {
+        return imagemBlob;
     }
 
-    public void setImagemPath(String imagemPath) {
-        this.imagemPath = imagemPath;
+    public void setImagemBlob(byte[] imagemBlob) {
+        this.imagemBlob = imagemBlob;
     }
-}
+    }

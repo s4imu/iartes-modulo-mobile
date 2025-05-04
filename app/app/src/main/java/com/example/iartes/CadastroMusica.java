@@ -23,6 +23,9 @@ import androidx.preference.PreferenceManager;
 import com.example.iartes.model.Musica;
 import com.example.iartes.model.MusicaDAO;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 public class CadastroMusica extends AppCompatActivity {
@@ -34,6 +37,8 @@ public class CadastroMusica extends AppCompatActivity {
     private EditText editAlbum;
     private ImageView imageView;
     private String img = "";
+
+    private byte[] imagemBytes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,25 @@ public class CadastroMusica extends AppCompatActivity {
         }
     }
 
+    private byte[] getImagemBytes(Uri uri) {
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(uri);
+            ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+            int bufferSize = 1024;
+            byte[] buffer = new byte[bufferSize];
+
+            int len;
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+
+            return byteBuffer.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public void escolherImagem(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, IMG_REQUEST);
@@ -77,7 +101,7 @@ public class CadastroMusica extends AppCompatActivity {
         if (requestCode == IMG_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             Uri uri = data.getData();
             imageView.setImageURI(uri);
-            img = uri.toString();
+            imagemBytes = getImagemBytes(uri); // nova variável
         }
     }
 
@@ -91,7 +115,7 @@ public class CadastroMusica extends AppCompatActivity {
             return;
         }
 
-        Musica musica = new Musica(nome, artista, album, img);
+        Musica musica = new Musica(nome, artista, album, imagemBytes);
         MusicaDAO dao = new MusicaDAO(this);
 
         if (dao.addMusica(musica)) {
